@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
+import ColorPicker from './ColorPicker.jsx';
 
 class NoteEditor extends Component {
   constructor(props) {
     super();
 
     this.state = {
-      value: ""
+      value: "",
+      color: "yellow"
     };
-
+    this.handleColorChange = this.handleColorChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleNoteAdd = this.handleNoteAdd.bind(this);
   }
@@ -19,13 +21,19 @@ class NoteEditor extends Component {
   handleNoteAdd(e) {
     const newNote = {
       text: this.state.value,
-      color: 'yellow',
+      color: this.state.color,
       id: Date.now()
     };
 
     this.props.onNoteAdd(newNote);
 
     this.resetState();
+  }
+
+  handleColorChange(newColor) {
+    this.setState({
+      color: newColor
+    });
   }
 
   resetState() {
@@ -44,7 +52,10 @@ class NoteEditor extends Component {
           cols="100" 
           rows="10">
         </textarea>
-        <button className="editor__button" onClick={this.handleNoteAdd}>Create</button>
+        <div className="editor__buttons">
+          <ColorPicker onColorChange={this.handleColorChange} />
+          <button className="editor__button" onClick={this.handleNoteAdd}>Create</button>
+        </div>
       </div>
     );
   }
